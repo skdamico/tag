@@ -8,10 +8,11 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class MainViewController: UIViewController {
     
-    let searchView = SearchView()
+    let searchInputViewController = SearchInputViewController()
     
     override func loadView() {
         let view = UIView()
@@ -23,9 +24,19 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(searchView)
+        // Add the Search Input
+        searchInputViewController.willMove(toParentViewController: self)
+        addChildViewController(searchInputViewController)
+        view.addSubview(searchInputViewController.view)
+        searchInputViewController.didMove(toParentViewController: self)
         
-        // TODO: snapkit placement
-        
+        searchInputViewController.view.snp.makeConstraints { (make) in
+            make.top.left.right.equalTo(view)
+        }
+    }
+    
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
 }
